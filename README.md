@@ -14,5 +14,7 @@ A partir da experiência com a aplicação de salários de servidores do MPU e J
 
 ## Referências
 [^1] Altera os Anexos IV, V e VI da Lei n. 10.356, de 27 de dezembro de 2001, que dispõe sobre o quadro de pessoal e o plano de carreira do Tribunal de Contas da União. Disponível em: [https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2325109](https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2325109 "PL 1392/2022")
-[^2] [https://josebarbosa.com.br/novopcs]
+
+[^2] https://josebarbosa.com.br/novopcs
+
 [^3] https://www.tesourotransparente.gov.br/publicacoes/relatorio-de-avaliacao-de-receitas-e-despesas-primarias-rardp/2022/14
