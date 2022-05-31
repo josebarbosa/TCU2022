@@ -12,6 +12,9 @@ A partir da experiência com a aplicação de salários de servidores do MPU e J
 * Revisão geral de 5% (a partir de julho) e reajuste de 8% a partir de agosto de 2022.
 * Observação: * o último relatório de avaliação de Receitas e Despesas Primárias[^3] aponta que o poder executivo está executando orçamento acima do teto de gastos, ao passo que os demais poderes (Legislativo, Judiciário), bem como o Ministério Público da União, possuem uma folga em relação ao teto de aproximadamente 3 bilhões.
 
+## Sobre
+Desenvolvido por José Antonio dos Santos Barbosa, servidor do Ministério Público da União. Todos os direitos reservados. Para maiores informações, acesse: https://josebarbosa.com.br/blog
+
 ## Referências
 [^1]:  Altera os Anexos IV, V e VI da Lei n. 10.356, de 27 de dezembro de 2001, que dispõe sobre o quadro de pessoal e o plano de carreira do Tribunal de Contas da União. Disponível em: [https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2325109](https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2325109 "PL 1392/2022")
 
