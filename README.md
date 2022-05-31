@@ -11,7 +11,7 @@ A partir da experiência com a aplicação de salários de servidores do MPU e J
 * Revisão geral de 5%, sem reajuste de 13%; e
 * Revisão geral de 5% (a partir de julho) e reajuste de 8% a partir de agosto de 2022.
 
-** Observação: ** o último relatório de avaliação de Receitas e Despesas Primárias[^3] aponta que o poder executivo está executando orçamento acima do teto de gastos, ao passo que os demais poderes (Legislativo, Judiciário), bem como o Ministério Público da União, possuem uma folga em relação ao teto de aproximadamente 3 bilhões.
+__Observação:__ o último relatório de avaliação de Receitas e Despesas Primárias[^3] aponta que o poder executivo está executando orçamento acima do teto de gastos, ao passo que os demais poderes (Legislativo, Judiciário), bem como o Ministério Público da União, possuem uma folga em relação ao teto de aproximadamente 3 bilhões.
 
 ## Sobre
 Desenvolvido por José Antonio dos Santos Barbosa, servidor do Ministério Público da União. Todos os direitos reservados. Para maiores informações, acesse: https://josebarbosa.com.br/blog
