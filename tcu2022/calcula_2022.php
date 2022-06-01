@@ -1,5 +1,5 @@
 <?php
-if(!$_POST['orgao']) header('location:index.php');
+if(!$_POST['cargo']) header('location:index.php');
 session_start();
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="pt-br" xml:lang="pt-br">
@@ -56,7 +56,25 @@ session_start();
     echo "<h3>Resultado</h3><a href='index.php'>Novo Cálculo</a> <hr />";
 
 
-    listaReferencias();
+        $previdencia = $_POST['previdencia'];
+        $funprespIndice = $_POST['funprespIndice'];
+        $funprespFC = $_POST['funcaoContribuicaoFunpresp'];
+        $cargo = $_POST['cargo'];
+        $nivel = $_POST['nivel'];
+        $fc = $_POST['fc'];
+        $jornada = $_POST['jornada'];
+        $desempenho = $_POST['desempenho'];
+        $vpni = $_POST['vpni'];
+        $vpni = explode(",", $vpni);
+        $vpni = implode(".", $vpni);
+
+        $anuenio = $_POST['anuenio'];
+        $dependentes = $_POST['dependentes'];
+        $dependentesCreche = $_POST['dependentesCreche'];
+        if($_POST['funprespOpcional'])$funprespOpcional = $_POST['funprespOpcional']/100;
+
+
+
 //falta considerar o cargo, se ÃƒÂƒÃ‚Â© MPU ou Judiciário, negritar linha do salário e mostrar a reestruturação de 15 para 13 nÃƒÂƒÃ‚Â­veis
 //ÃƒÂƒÃ‚Â© colocado um if para testar se nÃƒÂƒÃ‚Â£o está sendo enviado um formulário vazio, o que pode ser o caso de quem entra diretamente atravÃƒÂƒÃ‚Â©s do site calcula.php, por exemplo.
 
@@ -165,39 +183,41 @@ session_start();
                 $query = "select indice from percentuais_gce where cargo='".$cargo."' AND nivel='".$nivel."' limit 1";
                 $resultado2 = mysqli_query($conexao, $query) or die ("Erro de consulta do VB");
                 $row2 = mysqli_fetch_array($resultado2, MYSQLI_ASSOC);
-                $gce = $row2['gce'];
+                $gce = $row2['indice'];
+
                 $gceIndice = $gce/100;
                 for($x = 0; $x <= 3; $x++){
+                  echo $gceValor[$x];
                   $gceValor[$x] = round(($vencimento[$x] * $gceIndice),2);
                 }
-                echo "<tr class='table-success'><td>GAMPU: </td>
+                echo "<tr class='table-success'><td>GCE: </td>
                 <td align='right'>".formataNumeroReal($gceValor[0])." </td>
                 <td align='right'>".formataNumeroReal($gceValor[1])." </td>
                 <td align='right'>".formataNumeroReal($gceValor[2])." </td>
                 <td align='right'>".formataNumeroReal($gceValor[3])." </td>
                 </tr>";
                 for($x = 0; $x <= 3; $x++){
-                  $bruto[$x] = $gceValor[$x];
-                  $baseIrrf[$x] = $gceValor[$x];
-                  $basepss[$x] = $gceValor[$x];
-                  $remuneracao[$x] = $gceValor[$x];
+                  $bruto[$x] += $gceValor[$x];
+                  $baseIrrf[$x] += $gceValor[$x];
+                  $basepss[$x] += $gceValor[$x];
+                  $remuneracao[$x] += $gceValor[$x];
                 }
 
                 $desempenhoIndice = $desempenho/100;
                 for($x = 0; $x <= 3; $x++){
                   $desempenhoValor[$x] = round(($maiorVencimento[$x] * $desempenhoIndice),2);
                 }
-                echo "<tr class='table-success'><td>GAMPU: </td>
+                echo "<tr class='table-success'><td>Grat. Desempenho: </td>
                 <td align='right'>".formataNumeroReal($desempenhoValor[0])." </td>
                 <td align='right'>".formataNumeroReal($desempenhoValor[1])." </td>
                 <td align='right'>".formataNumeroReal($desempenhoValor[2])." </td>
                 <td align='right'>".formataNumeroReal($desempenhoValor[3])." </td>
                 </tr>";
                 for($x = 0; $x <= 3; $x++){
-                  $bruto[$x] = $desempenhoValor[$x];
-                  $baseIrrf[$x] = $desempenhoValor[$x];
-                  $basepss[$x] = $desempenhoValor[$x];
-                  $remuneracao[$x] = $desempenhoValor[$x];
+                  $bruto[$x] += $desempenhoValor[$x];
+                  $baseIrrf[$x] += $desempenhoValor[$x];
+                  $basepss[$x] += $desempenhoValor[$x];
+                  $remuneracao[$x] += $desempenhoValor[$x];
                 }
 
                 /*
@@ -238,9 +258,9 @@ session_start();
                           <td align='right'>".formataNumeroReal($fcValor[3])." </td>
                         </tr>";
                         for($x = 0; $x <= 3; $x++){
-                          $bruto[$x] = $fcValor[$x];
-                          $baseIrrf[$x] = $fcValor[$x];
-                          $remuneracao[$x] = $fcValor[$x];
+                          $bruto[$x] += $fcValor[$x];
+                          $baseIrrf[$x] += $fcValor[$x];
+                          $remuneracao[$x] += $fcValor[$x];
                           if($funprespFC && $previdencia==2)$basepss[$x] += $fcValor[$x];
                         }
                 }
@@ -261,15 +281,30 @@ session_start();
                         <td align='right'>".formataNumeroReal($anuenioValor[3])." </td>
                         </tr>";
                         for($x = 0; $x <= 3; $x++){
-                          $bruto[$x] = $anuenioValor[$x];
-                          $baseIrrf[$x] = $anuenioValor[$x];
-                          $basepss[$x] = $anuenioValor[$x];
-                          $remuneracao[$x] = $anuenioValor[$x];
+                          $bruto[$x] += $anuenioValor[$x];
+                          $baseIrrf[$x] += $anuenioValor[$x];
+                          $basepss[$x] += $anuenioValor[$x];
+                          $remuneracao[$x] += $anuenioValor[$x];
                         }
                 }
                 /*
                 * Soma valor do VPNI, se houver
                 */
+                $vpi = 68.85;
+
+                  echo "<tr class='table-success'><td>VPI: </td>
+                  <td align='right'>".formataNumeroReal($vpi)." </td>
+                  <td align='right'>".formataNumeroReal($vpi)." </td>
+                  <td align='right'>".formataNumeroReal($vpi)." </td>
+                  <td align='right'>".formataNumeroReal($vpi)." </td>
+                  </tr>";
+                  for($x = 0; $x <= 3; $x++){
+                    $bruto[$x] += $vpi;
+                    $baseIrrf[$x] += $vpi;
+                    $basepss[$x] += $vpi;
+                    $remuneracao[$x] += $vpi;
+                  }
+
                 if($vpni>0){
                         $vpniAjustada = $vpni * 1.05;
                         echo "<tr class='table-success'><td>VPNI: </td>
@@ -280,15 +315,15 @@ session_start();
                         </tr>";
                         for($x = 0; $x <= 3; $x++){
                           if($x % 2 == 0){
-                            $bruto[$x] = $vpni[$x];
-                            $baseIrrf[$x] = $vpni[$x];
-                            $basepss[$x] = $vpni[$x];
-                            $remuneracao[$x] = $vpni[$x];
+                            $bruto[$x] += $vpni[$x];
+                            $baseIrrf[$x] += $vpni[$x];
+                            $basepss[$x] += $vpni[$x];
+                            $remuneracao[$x] += $vpni[$x];
                           }else{
-                            $bruto[$x] = $vpniAjustada[$x];
-                            $baseIrrf[$x] = $vpniAjustada[$x];
-                            $basepss[$x] = $vpniAjustada[$x];
-                            $remuneracao[$x] = $vpniAjustada[$x];
+                            $bruto[$x] += $vpniAjustada[$x];
+                            $baseIrrf[$x] += $vpniAjustada[$x];
+                            $basepss[$x] += $vpniAjustada[$x];
+                            $remuneracao[$x] += $vpniAjustada[$x];
                           }
 
                         }
@@ -312,8 +347,8 @@ session_start();
                 if($dependentesCreche){
                     $auxilioCreche = $dependentesCreche * 791.58;
                     echo "<tr class='table-success'><td>Auxílio-creche: </td><td align='right'>".formataNumeroReal($auxilioCreche)." </td>
-                    <td>Auxílio-creche: </td><td align='right'>".formataNumeroReal($auxilioCreche)." </td><td>Auxílio-creche: </td><td align='right'>".formataNumeroReal($auxilioCreche)." </td>
-                    <td>Auxílio-creche: </td><td align='right'>".formataNumeroReal($auxilioCreche)." </td></tr>";
+                  <td align='right'>".formataNumeroReal($auxilioCreche)." </td><td align='right'>".formataNumeroReal($auxilioCreche)." </td>
+                    <td align='right'>".formataNumeroReal($auxilioCreche)." </td></tr>";
                     for($x = 0; $x <= 3; $x++){
                       $bruto[$x] += $auxilioCreche;
                     }
@@ -364,7 +399,7 @@ session_start();
 
                 }
                 for($x = 0; $x <= 3; $x++){
-                  $descontos[$x] = $pssValor[$x];
+                  $descontos[$x] += $pssValor[$x];
                   $rendimentosTributaveis[$x] = $baseIrrf[$x];
                   $baseIrrf[$x]-= $pssValor[$x];
                 }
@@ -378,15 +413,29 @@ session_start();
 
                 //Calculo de contribuição do FUNPRESP
                 if($previdencia == 2 && $basepss >= $teto && $funprespIndice > 0){
-                        $funprespValor = round((($basepss - $teto) * $funprespIndice),2);
-                        $descontos += $funprespValor;
-                        $baseIrrf -= $funprespValor;
-                        echo "<tr><td>Contribuição Funpresp (".($funprespIndice*100)."%): </td><td align='right'><font color='660000'>(".formataNumeroReal($funprespValor).")</font> </td></tr>";
+                    for($x = 0; $x <= 3; $x++){
+                        $funprespValor[$x] = round((($basepss[$x] - $teto) * $funprespIndice),2);
+                        $descontos[$x] += $funprespValor[$x];
+                        $baseIrrf[$x] -= $funprespValor[$x];
+                      }
+                        echo "<tr><td>Contribuição Funpresp (".($funprespIndice*100)."%): </td>
+                        <td align='right'><font color='660000'>(".formataNumeroReal($funprespValor[0]).")</font> </td>
+                        <td align='right'><font color='660000'>(".formataNumeroReal($funprespValor[1]).")</font> </td>
+                        <td align='right'><font color='660000'>(".formataNumeroReal($funprespValor[2]).")</font> </td>
+                        <td align='right'><font color='660000'>(".formataNumeroReal($funprespValor[3]).")</font> </td>
+                        </tr>";
                   if($funprespOpcional > 0){
-                        $funprespOpcionalValor = round((($basepss - $teto) * $funprespOpcional),2);
-                        $descontos += $funprespOpcionalValor;
-                        $baseIrrf -= $funprespOpcionalValor;
-                        echo "<tr class='table-warning'><td>Contribuição Funpresp Opcional (".($funprespOpcional*100)."%): </td><td align='right'><font color='660000'>(".formataNumeroReal($funprespOpcionalValor).")</font> </td></tr>";
+                    for($x = 0; $x <= 3; $x++){
+                        $funprespOpcionalValor[$x] = round((($basepss[$x] - $teto) * $funprespOpcional),2);
+                        $descontos[$x] += $funprespOpcionalValor[$x];
+                        $baseIrrf[$x] -= $funprespOpcionalValor[$x];
+                      }
+                        echo "<tr class='table-warning'><td>Contribuição Funpresp Opcional (".($funprespOpcional*100)."%): </td>
+                        <td align='right'><font color='660000'>(".formataNumeroReal($funprespOpcionalValor[0]).")</font> </td>
+                        <td align='right'><font color='660000'>(".formataNumeroReal($funprespOpcionalValor[1]).")</font> </td>
+                        <td align='right'><font color='660000'>(".formataNumeroReal($funprespOpcionalValor[2]).")</font> </td>
+                        <td align='right'><font color='660000'>(".formataNumeroReal($funprespOpcionalValor[3]).")</font> </td>
+                        </tr>";
 
                   }
                 }
@@ -446,8 +495,8 @@ echo "<tr><td><font size='2'>Rendimentos Tributáveis</b>: </td>
              */
 
 
-                 }
-         }
+
+
 
 
 
